@@ -1,4 +1,3 @@
-
 # Forge
 [![Go Version](https://img.shields.io/github/go-mod/go-version/Jina404/forge)](https://github.com/Jina404/forge)
 [![License](https://img.shields.io/github/license/Jina404/forge)](LICENSE)
@@ -30,7 +29,7 @@ Unlike traditional tools that test performance or security in isolation, Forge *
 
 ```bash
 # Clone the repository
-git clone https://github.com/jina404/forge.git
+git clone https://github.com/Jina404/forge.git
 cd forge
 
 # Build the binary (requires Go 1.20+)
@@ -39,6 +38,3 @@ go build -o forge ./cmd/forge
 
 # Move to your PATH (optional)
 sudo mv forge /usr/local/bin/
-
-
-###Option 2: Download Pre-Built Binary
