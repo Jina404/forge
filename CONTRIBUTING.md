@@ -1,11 +1,10 @@
-cat > CONTRIBUTING.md << 'EOF'
 # Contributing to Forge
 
 Thank you for your interest in contributing to Forge! This document provides guidelines to make the process smooth and effective.
 
 ## Code of Conduct
 
-Please read and follow our [Code of Conduct](CODE_OF_CONDUCT.md).
+Please read and follow our CODE_OF_CONDUCT.md.
 
 ## How to Contribute
 
@@ -117,5 +116,4 @@ Instances of abusive behavior may be reported to the maintainer via GitHub issue
 ## Attribution
 
 This Code of Conduct is adapted from the [Contributor Covenant](https://www.contributor-covenant.org/).
-EOF
 
