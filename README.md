@@ -1,40 +1,108 @@
 # Forge
 [![Go Version](https://img.shields.io/github/go-mod/go-version/Jina404/forge)](https://github.com/Jina404/forge)
-[![License](https://img.shields.io/github/license/Jina404/forge)](LICENSE)
 [![Issues](https://img.shields.io/github/issues/Jina404/forge)](https://github.com/Jina404/forge/issues)
 [![Stars](https://img.shields.io/github/stars/Jina404/forge)](https://github.com/Jina404/forge/stargazers)
-**Forge** is an open-source, high-performance resilience and security testing tool. It combines massive load generation with advanced vulnerability detection to answer one critical question:
 
-> *"Does my application stay secure when it's under attack?"*
+## Autonomous Security Validation Platform
 
-Unlike traditional tools that test performance or security in isolation, Forge **simultaneously** floods your app with traffic and fuzzes parameters with malicious payloads. It detects both obvious vulnerabilities (like SQL errors) and **blind vulnerabilities** (time-based SQLi, subtle response differences) that only manifest under stress.
+Forge is an open-source AI-powered red-team platform that combines:
 
----
+- autonomous security reasoning
+- high-performance attack simulation
+- vulnerability validation
+- evidence collection
+- professional reporting
+
+## Why Forge?
+
+Traditional scanners ask:
+
+"Is this vulnerability present?"
+
+Forge asks:
+
+"Can this vulnerability actually be exploited under realistic conditions?"
 
 ## Features
 
-- **High-Concurrency Load Engine** – Generate 10,000+ requests/sec from a single laptop.
-- **Advanced Vulnerability Detection** – Signature-based, time-based blind, boolean blind, and response diffing.
-- **Context-Aware XSS Detection** – Identifies reflection context (script tag, attribute, JS string).
-- **Resilience Correlation** – See if your WAF or rate limiter fails under load.
-- **Detailed Remediation Advice** – Every finding comes with a plain-English explanation and fix.
-- **Local-First, Zero Dependencies** – Single binary, no Docker, no cloud required.
-- **Mixed-Mode Testing** – Simulate real users + attackers simultaneously.
+- AI-driven attack planning
+- Web application testing
+- API security testing
+- Browser automation
+- Vulnerability validation
+- Attack campaigns
+- Professional reporting
+- Enterprise multi-tenant boundaries with RBAC and audit logs
 
----
+## Architecture
+
+```text
+								 User
+									 |
+									 v
+							 Forge API
+									 |
+									 v
+				 Campaign Controller
+							/           \
+						 v             v
+				 AI Agent      Attack Engine
+						 \             /
+							v           v
+						 Evidence + Reporting
+```
+
+Detailed docs:
+
+- [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
+- [docs/architecture/OVERVIEW.md](docs/architecture/OVERVIEW.md)
+- [docs/architecture/SYSTEM_DESIGN.md](docs/architecture/SYSTEM_DESIGN.md)
 
 ## Installation
 
-### Option 1: Clone and Build (Recommended)
+Run full stack:
 
 ```bash
-# Clone the repository
-git clone https://github.com/Jina404/forge.git
-cd forge
+docker compose up --build
+```
 
-# Build the binary (requires Go 1.20+)
-go mod tidy
-go build -o forge ./cmd/forge
+## Quick Example
 
-# Move to your PATH (optional)
-sudo mv forge /usr/local/bin/
+```bash
+forge campaign create \
+	--name "Client Assessment" \
+	--target https://example.com
+```
+
+Or via API:
+
+```bash
+curl -X POST http://127.0.0.1:8081/campaigns \
+	-H "Authorization: Bearer <token>" \
+	-H "Content-Type: application/json" \
+	-d '{"name":"API Security Test","target_url":"https://example.com"}'
+```
+
+## Security Notice
+
+Forge must only be used against systems you own or have written permission to test.
+
+- [SECURITY.md](SECURITY.md)
+- [docs/security/safe-usage.md](docs/security/safe-usage.md)
+
+## Documentation
+
+- [docs/README.md](docs/README.md)
+- [docs/GETTING_STARTED.md](docs/GETTING_STARTED.md)
+- [docs/QUICK_START.md](docs/QUICK_START.md)
+- [docs/developer/API_REFERENCE.md](docs/developer/API_REFERENCE.md)
+
+## Community
+
+- GitHub Discussions
+- [Contributing Guide](CONTRIBUTING.md)
+- [Code of Conduct](CODE_OF_CONDUCT.md)
+
+## CI
+
+GitHub Actions workflow [compose-smoke.yml](.github/workflows/compose-smoke.yml) builds and smoke-tests the full Compose stack.

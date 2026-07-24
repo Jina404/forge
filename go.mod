@@ -2,7 +2,10 @@ module github.com/Jina404/forge
 
 go 1.26.1
 
-require github.com/spf13/cobra v1.10.2
+require (
+	github.com/jackc/pgx/v5 v5.7.6
+	github.com/spf13/cobra v1.10.2
+)
 
 require (
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect

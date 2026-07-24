@@ -1,0 +1,64 @@
+name: Compose Smoke Test
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build and start stack
+        run: docker compose up -d --build
+
+      - name: Wait for Forge agent health
+        run: |
+          for i in $(seq 1 60); do
+            if curl -sf http://127.0.0.1:8081/healthz >/dev/null; then
+              echo "forge-agent is healthy"
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "forge-agent did not become healthy"
+          docker compose logs
+          exit 1
+
+      - name: Bootstrap organization
+        run: |
+          curl -sf -X POST http://127.0.0.1:8081/bootstrap \
+            -H "Content-Type: application/json" \
+            -H "X-Forge-Bootstrap-Token: forge-bootstrap-change-me" \
+            -d '{"organization_name":"CI Org","admin_email":"admin@ci.test","admin_password":"Secret123!"}' >/tmp/bootstrap.json
+
+      - name: Login and call secured endpoints
+        run: |
+          TOKEN=$(curl -sf -X POST http://127.0.0.1:8081/auth/login \
+            -H "Content-Type: application/json" \
+            -d '{"email":"admin@ci.test","password":"Secret123!"}' | python -c "import sys,json; print(json.load(sys.stdin)['token'])")
+
+          curl -sf http://127.0.0.1:8081/organizations -H "Authorization: Bearer $TOKEN" >/tmp/orgs.json
+
+          ORG_ID=$(python - <<'PY'
+import json
+with open('/tmp/orgs.json','r',encoding='utf-8') as f:
+    data=json.load(f)
+print(data[0]['id'])
+PY
+)
+
+          curl -sf -X POST http://127.0.0.1:8081/organizations/${ORG_ID}/projects \
+            -H "Authorization: Bearer $TOKEN" \
+            -H "Content-Type: application/json" \
+            -d '{"name":"CI Project","client_name":"CI Client","scope":"https://example.com","rules_of_engagement":"read-only"}' >/tmp/project.json
+
+      - name: Teardown stack
+        if: always()
+        run: docker compose down -v

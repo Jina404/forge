@@ -1,0 +1,60 @@
+site_name: Forge AI Docs
+site_description: Autonomous Security Validation Platform
+site_url: https://docs.forge.security
+
+theme:
+  name: material
+
+nav:
+  - Home: docs/README.md
+  - Getting Started: docs/GETTING_STARTED.md
+  - Installation: docs/INSTALLATION.md
+  - Quick Start: docs/QUICK_START.md
+  - Architecture:
+      - Overview: docs/architecture/OVERVIEW.md
+      - System Design: docs/architecture/SYSTEM_DESIGN.md
+      - Data Flow: docs/architecture/DATA_FLOW.md
+      - AI Agent: docs/architecture/AI_AGENT_ARCHITECTURE.md
+      - Security Model: docs/architecture/SECURITY_MODEL.md
+  - User Guide:
+      - Concepts: docs/user-guide/concepts.md
+      - Campaigns: docs/user-guide/campaigns.md
+      - Targets: docs/user-guide/targets.md
+      - Attack Modes: docs/user-guide/attack-modes.md
+      - Evidence: docs/user-guide/evidence.md
+      - Reporting: docs/user-guide/reporting.md
+  - Developer:
+      - Contributing: docs/developer/CONTRIBUTING.md
+      - Development Setup: docs/developer/DEVELOPMENT_SETUP.md
+      - Code Structure: docs/developer/CODE_STRUCTURE.md
+      - Adding Attack Modules: docs/developer/ADDING_ATTACK_MODULES.md
+      - Adding Detectors: docs/developer/ADDING_DETECTORS.md
+      - API Reference: docs/developer/API_REFERENCE.md
+  - AI Agent:
+      - Overview: docs/ai-agent/overview.md
+      - Planner: docs/ai-agent/planner.md
+      - Reasoning: docs/ai-agent/reasoning.md
+      - Memory System: docs/ai-agent/memory-system.md
+      - Agent Tools: docs/ai-agent/agent-tools.md
+  - Attack Modules:
+      - SQL Injection: docs/attack-modules/sql-injection.md
+      - XSS: docs/attack-modules/xss.md
+      - Authentication: docs/attack-modules/authentication.md
+      - JWT: docs/attack-modules/jwt.md
+      - API Security: docs/attack-modules/api-security.md
+      - Fuzzing: docs/attack-modules/fuzzing.md
+  - Deployment:
+      - Docker: docs/deployment/docker.md
+      - Kubernetes: docs/deployment/kubernetes.md
+      - Cloud: docs/deployment/cloud.md
+      - Self Hosting: docs/deployment/self-hosting.md
+  - Security:
+      - Responsible Disclosure: docs/security/responsible-disclosure.md
+      - Threat Model: docs/security/threat-model.md
+      - Permissions: docs/security/permissions.md
+      - Safe Usage: docs/security/safe-usage.md
+  - Examples:
+      - Web App Test: docs/examples/web-app-test.md
+      - API Test: docs/examples/api-test.md
+      - Enterprise Assessment: docs/examples/enterprise-assessment.md
+  - FAQ: docs/FAQ.md

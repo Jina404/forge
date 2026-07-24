@@ -1,0 +1,82 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: forge-postgres
+    environment:
+      POSTGRES_DB: forge
+      POSTGRES_USER: forge
+      POSTGRES_PASSWORD: forge
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U forge -d forge"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    volumes:
+      - forge_pg_data:/var/lib/postgresql/data
+
+  forge-ai:
+    build:
+      context: ./forge-ai
+      dockerfile: Dockerfile
+    container_name: forge-ai
+    ports:
+      - "8090:8090"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8090/healthz', timeout=2)"]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+
+  browser-agent:
+    build:
+      context: ./browser-agent
+      dockerfile: Dockerfile
+    container_name: forge-browser-agent
+    ports:
+      - "8091:8091"
+    environment:
+      FORGE_BROWSER_PORT: "8091"
+      FORGE_BROWSER_ARTIFACT_DIR: "/app/artifacts/screenshots"
+    volumes:
+      - forge_browser_artifacts:/app/artifacts
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:8091/healthz').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+
+  forge-agent:
+    build:
+      context: .
+      dockerfile: Dockerfile.forge-agent
+    container_name: forge-agent
+    depends_on:
+      postgres:
+        condition: service_healthy
+      forge-ai:
+        condition: service_healthy
+      browser-agent:
+        condition: service_healthy
+    environment:
+      FORGE_API_BIND: ":8081"
+      FORGE_USE_POSTGRES: "true"
+      FORGE_DATABASE_URL: "postgres://forge:forge@postgres:5432/forge?sslmode=disable"
+      FORGE_AI_SERVICE_URL: "http://forge-ai:8090"
+      FORGE_BROWSER_SERVICE_URL: "http://browser-agent:8091"
+      FORGE_BOOTSTRAP_TOKEN: "forge-bootstrap-change-me"
+      FORGE_AUTH_SIGNING_KEY: "forge-signing-key-change-me"
+      FORGE_SESSION_TTL_SECONDS: "43200"
+      FORGE_REQUEST_TIMEOUT_SECONDS: "15"
+    ports:
+      - "8081:8081"
+    volumes:
+      - forge_evidence_artifacts:/app/artifacts
+
+volumes:
+  forge_pg_data:
+  forge_browser_artifacts:
+  forge_evidence_artifacts:

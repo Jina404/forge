@@ -1,0 +1,18 @@
+# Global ownership
+* @Jina404
+
+# Core engine
+/pkg/engine/ @Jina404
+/pkg/detector/ @Jina404
+/pkg/core/ @Jina404
+
+# Platform API and storage
+/pkg/api/ @Jina404
+/pkg/storage/ @Jina404
+
+# AI and browser services
+/forge-ai/ @Jina404
+/browser-agent/ @Jina404
+
+# Docs
+/docs/ @Jina404
